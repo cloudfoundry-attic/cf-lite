@@ -1,0 +1,27 @@
+{
+  "variables": {
+    "build_number": "0",
+    "source_path": "../tmp/box.ovf"
+  },
+
+  "builders": [{
+    "type": "virtualbox-ovf",
+    "source_path": "{{user `source_path`}}",
+    "headless": "true",
+
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "ssh_wait_timeout": "30s",
+
+    "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
+  }],
+
+  "post-processors": [{
+    "type": "vagrant",
+    "keep_input_artifact": true,
+    "vagrantfile_template": "templates/vagrant-local.tpl",
+    "output": "cf-lite-virtualbox-ubuntu-trusty-{{user `build_number`}}.box"
+  }]
+}
+
+
