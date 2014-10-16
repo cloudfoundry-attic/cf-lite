@@ -2,8 +2,9 @@
 
 set -ex
 
+FULL_PATH=`pwd "$(dirname $0)/.."`
+
 fetch_bosh_lite_ovf(){
-  full_path=`pwd "$(dirname $0)/.."`
   mkdir -p tmp
 
   (
@@ -14,14 +15,19 @@ fetch_bosh_lite_ovf(){
     tar xf virtualbox.box
   )
 
-  echo "${full_path}/tmp/box.ovf"
+  echo "${FULL_PATH}/tmp/box.ovf"
+}
+
+set_virtualbox_home(){
+  VBoxManage setproperty machinefolder "/var/vcap/data/VirtualBox\ VMs"
 }
 
 main() {
+  set_virtualbox_home
   ovf_file=`fetch_bosh_lite_ovf`
 
-  template_path=$(dirname $0)/../templates/virtualbox.json
-  packer build -var "source_path=${ovf_file}" $template_path
+  template_path="${FULL_PATH}/templates/virtualbox.json"
+  ./packer build -var "source_path=${ovf_file}" -var "build_number=${GO_PIPELINE_COUNTER}" $template_path
 }
 
 main
