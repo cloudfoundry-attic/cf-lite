@@ -65,7 +65,6 @@ build_manifest() {
     cd $WORKSPACE_DIR
     git clone --depth=1 https://github.com/cloudfoundry/cf-release.git
     cd $CF_DIR
-    ./update
 
     cd $WORKSPACE_DIR
     git clone --depth=1 https://github.com/cloudfoundry/bosh-lite.git
