@@ -18,6 +18,22 @@
     "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
   }],
 
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": ["mkdir -p /home/vagrant/tmp"]
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E {{ .Path }}",
+      "scripts": [
+        "scripts/provision-cf.sh"
+      ]
+    }
+  ],
+
+
   "post-processors": [{
     "type": "vagrant",
     "keep_input_artifact": true,
