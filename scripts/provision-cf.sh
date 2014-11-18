@@ -22,7 +22,7 @@ main() {
 
 make_compiled_package_cache() {
   mkdir -p /vagrant/tmp/compiled_package_cache
-  chmod 777 /vagrant/tmp/compiled_package_cache
+  chmod -R 777 /vagrant/tmp/compiled_package_cache
 }
 
 delete_compiled_package_cache() {
