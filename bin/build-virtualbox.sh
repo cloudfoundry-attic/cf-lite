@@ -27,7 +27,7 @@ main() {
   ovf_file=`fetch_bosh_lite_ovf`
 
   template_path="${FULL_PATH}/templates/virtualbox.json"
-  ./packer build -var "source_path=${ovf_file}" -var "build_number=${GO_PIPELINE_COUNTER}" $template_path
+  packer build -var "source_path=${ovf_file}" -var "build_number=${GO_PIPELINE_COUNTER}" $template_path
 }
 
 main
