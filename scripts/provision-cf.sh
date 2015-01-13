@@ -2,7 +2,7 @@
 
 set -xe
 
-STEMCELL_SOURCE=http://bosh-warden-stemcells.s3.amazonaws.com/
+STEMCELL_SOURCE=http://bosh-warden-stemcells.s3.amazonaws.com
 STEMCELL_FILE=latest-bosh-stemcell-warden.tgz
 WORKSPACE_DIR="${HOME}/tmp"
 CF_DIR="${WORKSPACE_DIR}/cf-release"
