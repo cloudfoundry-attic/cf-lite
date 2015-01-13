@@ -11,7 +11,9 @@ fetch_bosh_lite_ovf(){
     cd tmp
     rm -f virtualbox.box
 
-    wget https://vagrantcloud.com/cloudfoundry/boxes/bosh-lite/versions/6/providers/virtualbox.box 
+    box_name=bosh-lite-virtualbox-ubuntu-trusty-${BOSH_LITE_VERSION}.box
+    wget http://d2u2rxhdayhid5.cloudfront.net/${box_name}
+    mv ${box_name} virtualbox.box
     tar xf virtualbox.box
   )
 
