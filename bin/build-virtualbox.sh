@@ -12,8 +12,10 @@ fetch_bosh_lite_ovf(){
     rm -f virtualbox.box
 
     box_name=bosh-lite-virtualbox-ubuntu-trusty-${BOSH_LITE_VERSION}.box
-    wget http://d2u2rxhdayhid5.cloudfront.net/${box_name}
-    mv ${box_name} virtualbox.box
+    if [ ! -f $box_name ]; then
+      wget http://d2u2rxhdayhid5.cloudfront.net/${box_name}
+    fi
+    cp ${box_name} virtualbox.box
     tar xf virtualbox.box
   )
 
