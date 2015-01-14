@@ -1,6 +1,7 @@
 {
   "variables": {
     "build_number": "0",
+    "cf_release_version": "1",
     "source_path": "../tmp/box.ovf"
   },
 
@@ -26,6 +27,7 @@
     },
     {
       "type": "shell",
+      "environment_vars": ["CF_RELEASE_VERSION={{user `cf_release_version`}}"],
       "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E {{ .Path }}",
       "scripts": [
         "scripts/provision-cf.sh",
