@@ -65,11 +65,11 @@ build_manifest() {
     cd $WORKSPACE_DIR
     git clone --depth=1 https://github.com/cloudfoundry/cf-release.git
     cd $CF_DIR
+    git checkout tags/v${CF_RELEASE_VERSION}
 
     cd $WORKSPACE_DIR
     git clone --depth=1 https://github.com/cloudfoundry/bosh-lite.git
     cd $BOSH_LITE_DIR
-    git checkout tags/v${CF_RELEASE_VERSION}
     export CF_RELEASE_DIR=$CF_DIR
     ./bin/make_manifest_spiff
   )
