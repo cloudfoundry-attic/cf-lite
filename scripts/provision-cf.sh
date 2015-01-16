@@ -63,7 +63,7 @@ install_tools(){
 build_manifest() {
   (
     cd $WORKSPACE_DIR
-    git clone --depth=1 https://github.com/cloudfoundry/cf-release.git
+    git clone https://github.com/cloudfoundry/cf-release.git
     cd $CF_DIR
     git checkout tags/v${CF_RELEASE_VERSION}
 
