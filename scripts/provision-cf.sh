@@ -75,19 +75,8 @@ build_manifest() {
   )
 }
 
-fetch_cf_release() {
-  cf_release_version=$1
-  cf_tgz=cf-${cf_release_version}.tgz
-
-  if [ ! -e $cf_tgz ]; then
-    wget --progress=bar https://s3.amazonaws.com/cf-lite-build-artifacts/$cf_tgz
-  fi
-}
-
 deploy_release() {
-  fetch_cf_release $CF_RELEASE_VERSION
-
-  bosh -n -u admin -p admin upload release --skip-if-exists cf-${CF_RELEASE_VERSION}.tgz
+  bosh -n -u admin -p admin upload release --skip-if-exists https://bosh.io/d/github.com/cloudfoundry/cf-release?v=${CF_RELEASE_VERSION}.tgz
   bosh -n -u admin -p admin deploy
 }
 
