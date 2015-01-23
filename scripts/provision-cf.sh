@@ -76,7 +76,8 @@ build_manifest() {
 }
 
 deploy_release() {
-  bosh -n -u admin -p admin upload release --skip-if-exists https://bosh.io/d/github.com/cloudfoundry/cf-release?v=${CF_RELEASE_VERSION}.tgz
+  wget -O cf-${CF_RELEASE_VERSION}.tgz -https://bosh.io/github.com/cloudfoundry/cf-release?v=${CF_RELEASE_VERSION}
+  bosh -n -u admin -p admin upload release --skip-if-exists cf-${CF_RELEASE_VERSION}.tgz
   bosh -n -u admin -p admin deploy
 }
 
