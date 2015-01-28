@@ -1,0 +1,49 @@
+{
+  "variables": {
+    "bosh_lite_ami": "ami-80c8b0e8",
+    "region": "us-east-1",
+    "build_number": "0",
+    "cf_release_version": "1"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "ami_name": "cflite-{{user `build_number`}}",
+    "instance_type": "m1.large",
+    "region": "{{user `region`}}",
+    "source_ami":  "{{user `bosh_lite_ami`}}",
+    "ami_block_device_mappings": [
+      {
+      "device_name": "/dev/sda1",
+      "volume_size": "32"
+      }
+    ],
+    "launch_block_device_mappings": [
+      {
+      "device_name": "/dev/sda1",
+      "volume_size": "32"
+      }
+    ],
+    "ssh_username": "ubuntu",
+    "ami_description": "CF-Lite AMI (build {{user `build_number`}})"
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "inline": "while [ ! -f /var/lib/cloud/instance/boot-finished ] ; do sleep 1; done"
+  }, {
+    "type": "shell",
+    "environment_vars": ["CF_RELEASE_VERSION={{user `cf_release_version`}}"],
+    "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E {{ .Path }}",
+    "scripts": [
+      "scripts/provision-cf.sh",
+      "scripts/cleanup.sh",
+      "scripts/shrink-disk.sh"
+    ]
+  }],
+
+  "post-processors": [{
+    "type": "vagrant",
+    "keep_input_artifact": true,
+    "vagrantfile_template": "templates/vagrant-aws.tpl",
+    "output": "cf-lite-{{ .Provider }}-ubuntu-trusty-{{user `build_number`}}.box"
+  }]
+}
