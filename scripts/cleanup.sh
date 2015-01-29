@@ -14,8 +14,8 @@ unmount_loop_devices() {
   containers=`curl 127.0.0.1:7777/containers | jq '.handles'`
   let num_containers=`echo $containers | jq 'length'` i=1
   while (($i <= $num_containers)); do
-    container_id=`echo $containers | jq '.[$i]'`
-    loopback=`df | grep $container_id | awk '{ print $1 }'`
+    container_id=`echo $containers | jq ".[$i]"`
+    loopback=`df | grep $container_id | awk "{ print $1 }"`
 
     if [ $? = 0 ]; then
       umount $loopback
