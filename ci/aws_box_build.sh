@@ -11,7 +11,7 @@ upload_box() {
   s3cmd --access_key=$BOSH_AWS_ACCESS_KEY_ID --secret_key=$BOSH_AWS_SECRET_ACCESS_KEY put $box_name $bucket_url
 }
 
-./bin/build-aws ${BOSH_LITE_AMI} ${CF_RELEASE_VERSION} ${GO_PIPELINE_COUNTER}
+./bin/build-aws ${BOSH_LITE_AMI} ${CF_RELEASE_VERSION} ${GO_PIPELINE_COUNTER} | tee output
 
 ami=`tail -2 output | grep -Po "ami-.*"`
 
