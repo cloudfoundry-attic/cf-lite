@@ -17,6 +17,7 @@ main() {
   install_tools
   build_manifest
   deploy_release
+  test_release
   delete_compiled_package_cache
 }
 
@@ -79,6 +80,10 @@ deploy_release() {
   wget -O cf-${CF_RELEASE_VERSION}.tgz https://bosh.io/d/github.com/cloudfoundry/cf-release?v=${CF_RELEASE_VERSION}
   bosh -n -u admin -p admin upload release --skip-if-exists cf-${CF_RELEASE_VERSION}.tgz
   bosh -n -u admin -p admin deploy
+}
+
+test_release() {
+  bosh -n -u admin -p admin run errand acceptance-tests
 }
 
 main
