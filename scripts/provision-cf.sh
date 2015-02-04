@@ -83,7 +83,8 @@ deploy_release() {
 }
 
 test_release() {
-  bosh -n -u admin -p admin run errand acceptance-tests
+  echo Running CATS...
+  bosh -n -u admin -p admin run errand acceptance_tests
 }
 
 main
