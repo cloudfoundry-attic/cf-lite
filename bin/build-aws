@@ -12,13 +12,15 @@ function valid_arguments() {
 function packer_build() {
   template_path=$(dirname $0)/../templates/aws.json
   args="-var 'bosh_lite_ami=$BOSH_LITE_AMI' -var 'cf_release_version=$CF_RELEASE_VERSION'"
+  args="$args -color=false" # to get rid of colour codes in goCD output
+
   if [ -n "$CF_LITE_CANDIDATE_BUILD_NUMBER" ]; then
     args="$args -var 'build_number=$CF_LITE_CANDIDATE_BUILD_NUMBER'"
   fi
   if [ -n "$REGION" ]; then
     args="$args -var 'region=$REGION'"
   fi
-
+  
   rm -rf $(dirname $0)/../output-amazon-ebs
 
   sh -c "packer build $args $template_path"
