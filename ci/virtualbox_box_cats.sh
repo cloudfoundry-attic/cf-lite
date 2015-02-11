@@ -23,13 +23,13 @@ box_add_and_vagrant_up() {
   candidate_build_number=$2
 
   vagrant box add cf-lite-${box_type}-ubuntu-trusty-${candidate_build_number}.box --name cf-lite-${box_type}-ubuntu-trusty-${candidate_build_number}.box --force
-  vagrant up --provider=aws
+  vagrant up --provider=virtualbox
 }
 
 main() {
 
-  download_box aws ${GO_PIPELINE_COUNTER}
-  box_add_and_vagrant_up aws ${GO_PIPELINE_COUNTER}
+  download_box virtualbox ${GO_PIPELINE_COUNTER}
+  box_add_and_vagrant_up virtualbox ${GO_PIPELINE_COUNTER}
   ./bin/add-route || true
 
   fetch_latest_bosh
@@ -40,9 +40,7 @@ main() {
   echo Running CATS...
 
   bosh target `vagrant ssh-config 2>/dev/null | grep HostName | awk '{print $2}'`
-  bosh deployment cf-warden
   bosh -n -u admin -p admin run errand acceptance_tests
 }
 
 main
-
