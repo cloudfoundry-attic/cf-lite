@@ -23,7 +23,7 @@ unmount_loop_devices() {
     if [ $? = 0 ]; then
       which umount
       echo $loopback
-      if [ ! -Z $loopback ]; then
+      if [ ! -z $loopback ]; then
         umount $loopback
       fi
     fi
