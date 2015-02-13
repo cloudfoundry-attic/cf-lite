@@ -11,7 +11,7 @@ trap reset EXIT
 create_vagrant_cloud_version(){
   result=`curl https://vagrantcloud.com/api/v1/box/cloudfoundry/cf-lite/versions \
           -X POST \
-          -d version[version]="$BOSH_LITE_CANDIDATE_BUILD_NUMBER" \
+          -d version[version]="$GO_PIPELINE_COUNTER" \
           -d access_token="$VAGRANT_CLOUD_ACCESS_TOKEN"`
   version_id=`echo $result | jq --raw-output ".number"`
 
@@ -35,11 +35,11 @@ publish_to_vagrant_cloud(){
     upload_box_to_vagrant_cloud $provider $provider $version_id
   done
 
-  curl https://vagrantcloud.com/api/v1/box/cloudfoundry/bosh-lite/version/${version_id}/release -X PUT -d access_token="$VAGRANT_CLOUD_ACCESS_TOKEN"  
+  curl https://vagrantcloud.com/api/v1/box/cloudfoundry/cf-lite/version/${version_id}/release -X PUT -d access_token="$VAGRANT_CLOUD_ACCESS_TOKEN"  
 }
 
 update_vagrant_file() {
-  sed -i'' -e "s/override.vm.box_version = '.\{4\}'/override.vm.box_version = '$GO_PIPELINE_COUNTER'/" Vagrantfile
+  sed -i'' -e "s/config.vm.box_version = '.\{4\}'/config.vm.box_version = '$GO_PIPELINE_COUNTER'/" Vagrantfile
   git diff
   git add Vagrantfile
   git commit -m "Update box version to $GO_PIPELINE_COUNTER"
