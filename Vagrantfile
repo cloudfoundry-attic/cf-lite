@@ -16,12 +16,12 @@ Vagrant.configure('2') do |config|
   config.vm.provision "shell", inline: "sudo apt-get install -y expect"
 
   config.vm.provider :aws do |v, override|
-    override.vm.synced_folder "scripts/", "/scripts"
-    override.vm.provision "shell", inline: "sudo chmod 777 /scripts/bosh-cck.sh"
-    override.vm.provision "shell", inline: "sudo /scripts/bosh-cck.sh"
-    #override.vm.provision "file", source: "scripts/bosh-cck-aws.sh", destination: "bosh-cck.sh"
-    #override.vm.provision "shell", inline: "sudo chmod 777 /home/ubuntu/bosh-cck.sh"
-    #override.vm.provision "shell", inline: "sudo /home/ubuntu/bosh-cck.sh"
+    #override.vm.synced_folder "scripts/", "/scripts"
+    #override.vm.provision "shell", inline: "sudo chmod 777 /scripts/bosh-cck.sh"
+    #override.vm.provision "shell", inline: "sudo /scripts/bosh-cck.sh"
+    override.vm.provision "file", source: "scripts/bosh-cck-aws.sh", destination: "bosh-cck.sh"
+    override.vm.provision "shell", inline: "sudo chmod 777 /home/ubuntu/bosh-cck.sh"
+    override.vm.provision "shell", inline: "sudo /home/ubuntu/bosh-cck.sh"
   end
 
   config.vm.provider :virtualbox do |v, override|
