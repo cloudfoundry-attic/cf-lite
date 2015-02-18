@@ -16,7 +16,7 @@ main() {
 
   download_box aws ${GO_PIPELINE_COUNTER}
   box_add_and_vagrant_up aws ${GO_PIPELINE_COUNTER}
-  ./bin/add-route || true
+  #./bin/add-route || true
 
   echo PATH = $PATH
   which bosh
