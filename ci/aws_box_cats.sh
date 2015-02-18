@@ -19,7 +19,7 @@ main() {
   #./bin/add-route || true
 
   echo PATH = $PATH
-  which bosh
+  which bosh || echo no bosh?
 
   echo Running CATS...
 
