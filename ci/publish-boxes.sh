@@ -6,7 +6,7 @@ reset() {
   git reset --hard HEAD
 }
 
-trap reset EXIT
+ trap reset EXIT
 
 create_vagrant_cloud_version(){
   result=`curl https://vagrantcloud.com/api/v1/box/cloudfoundry/cf-lite/versions \
@@ -23,7 +23,7 @@ create_vagrant_cloud_version(){
 }
 
 publish_to_s3(){
-  for provider in "virtualbox" "aws"; do
+  for provider in "aws"; do
     publish_vagrant_box_to_s3 $provider $GO_PIPELINE_COUNTER
   done
 }
@@ -31,7 +31,7 @@ publish_to_s3(){
 publish_to_vagrant_cloud(){
   version_id=`create_vagrant_cloud_version`
 
-  for provider in "virtualbox" "aws"; do
+  for provider in "aws"; do
     upload_box_to_vagrant_cloud $provider $provider $version_id
   done
 
@@ -73,15 +73,10 @@ main(){
     echo "VAGRANT_CLOUD_ACCESS_TOKEN needs to be set"
     exit 1
   fi
-
-  if [ -z "${BOSH_LITE_CANDIDATE_BUILD_NUMBER}" ]; then
-    echo "BOSH_LITE_CANDIDATE_BUILD_NUMBER needs to be set"
-    exit 1
-  fi
   
   publish_to_s3
   publish_to_vagrant_cloud
-  update_vagrant_file
+  #update_vagrant_file
 }
 
 main
