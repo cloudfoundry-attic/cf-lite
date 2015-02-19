@@ -21,8 +21,8 @@ main() {
   echo PATH = $PATH
   which bosh || echo no bosh?
 
-  export PATH=$PATH:/var/vcap/packages/ruby-2.1.2/2.1.2/lib/ruby/gems/2.1.0/bin
-
+  chruby 2.1.2
+  
   echo Running CATS...
 
   bosh -n -u admin -p admin target `vagrant ssh-config 2>/dev/null | grep HostName | awk '{print $2}'`
