@@ -6,7 +6,7 @@ reset() {
   git reset --hard HEAD
 }
 
- trap reset EXIT
+trap reset EXIT
 
 create_vagrant_cloud_version(){
   result=`curl https://vagrantcloud.com/api/v1/box/cloudfoundry/cf-lite/versions \
@@ -56,8 +56,10 @@ upload_box_to_vagrant_cloud() {
   curl https://vagrantcloud.com/api/v1/box/cloudfoundry/cf-lite/version/${version_id}/providers \
   -X POST \
   -d provider[name]="$provider" \
-  -d provider[url]="http://d2u2rxhdayhid5.cloudfront.net/cf-lite-$box_type-ubuntu-trusty-$GO_PIPELINE_COUNTER.box" \
+  -d provider[url]="https://s3.amazonaws.com/cf-lite-boxes/cf-lite-$box_type-ubuntu-trusty-$GO_PIPELINE_COUNTER.box" \
   -d access_token="$VAGRANT_CLOUD_ACCESS_TOKEN"
+
+  # -d provider[url]="http://d2u2rxhdayhid5.cloudfront.net/cf-lite-$box_type-ubuntu-trusty-$GO_PIPELINE_COUNTER.box" \
 }
 
 publish_vagrant_box_to_s3() {
