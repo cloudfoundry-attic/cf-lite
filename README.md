@@ -1,9 +1,8 @@
 # CF Lite
 
-A local development environment for CF.
+A local development environment for Cloud Foundry.
 
-This readme walks through deploying CF-Lite, a Cloud Foundry environment deployed with BOSH Lite.
-BOSH and BOSH Lite can be used to deploy just about anything once you've got the hang of it.
+CF Lite is a quick and easy method of acessing your own instance of Cloud Foundry. CF Lite was created for users to have their own sandbox version of CF to deploy applications. It does not require any installation or knowledge of BOSH. 
 
 ## Install CF Lite
 
@@ -46,14 +45,6 @@ BOSH and BOSH Lite can be used to deploy just about anything once you've got the
     | [Redhat 64 bit](https://cli.run.pivotal.io/stable?release=redhat64&source=github) | [Linux 64 bit](https://cli.run.pivotal.io/stable?release=linux64-binary&source=github) | [Linux 64 bit](https://cli.run.pivotal.io/edge?arch=linux64&source=github) |
     | [Debian 32 bit](https://cli.run.pivotal.io/stable?release=debian32&source=github)
     | [Debian 64 bit](https://cli.run.pivotal.io/stable?release=debian64&source=github)
-
-1. Install the latest version of the `bosh_cli`. (optional)
-
-   ```
-   gem install bosh_cli
-   ```
-   Refer to [BOSH CLI installation instructions](http://docs.cloudfoundry.org/bosh/bosh-cli.html) for more information and troubleshooting tips.
-
 
 1. You will need a keypair to ssh into your running cf-lite box.  If you don't have one already, you will need to create one.  The following instructions are applicable to a Mac/unix environment:
   1. "ssh-keygen -t rsa"
