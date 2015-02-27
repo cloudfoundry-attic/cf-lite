@@ -9,14 +9,14 @@ box_add_and_vagrant_up() {
   candidate_build_number=$2
 
   vagrant box add cf-lite-${box_type}-ubuntu-trusty-${candidate_build_number}.box --name cf-lite --force
-  vagrant up --provider=aws
+  vagrant up --provider=aws --debug
 }
 
 main() {
 
   download_box aws ${GO_PIPELINE_COUNTER}
   box_add_and_vagrant_up aws ${GO_PIPELINE_COUNTER}
-  #./bin/add-route || true
+  ./bin/add-route || true
 
   echo PATH = $PATH
   which bosh || echo no bosh?

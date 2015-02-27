@@ -6,7 +6,7 @@ download_box() {
   box_name=cf-lite-${box_type}-ubuntu-trusty-${candidate_build_number}.box
 
   rm -f cf-lite-${box_type}-ubuntu-trusty-*.box
-  wget "https://s3.amazonaws.com/cf-lite-ci-pipeline/${box_name}"
+  s3cmd get "s3://cf-lite-ci-pipeline/${box_name}"
 }
 
 upload_box() {
