@@ -8,7 +8,8 @@ box_add_and_vagrant_up() {
   box_type=$1
   candidate_build_number=$2
 
-  vagrant box add cf-lite-${box_type}-ubuntu-trusty-${candidate_build_number}.box --name cf-lite --force
+  #vagrant box add cf-lite-${box_type}-ubuntu-trusty-${candidate_build_number}.box --name cf-lite --force
+  vagrant init cloudfoundry/cf-lite
   vagrant up --provider=aws --debug
 }
 
