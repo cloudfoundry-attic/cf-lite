@@ -76,5 +76,35 @@ sudo iptables -t nat -A PREROUTING -p tcp -d $local_ip --dport 4443 -j DNAT --to
   else
     config.vm.provision "port_forwarding", type: :shell, run: "always", inline: PORT_FORWARDING
   end
-end
 
+
+  CCK = <<-CCK_SCRIPT
+bosh -u admin -p admin target localhost
+bosh -u admin -p admin download manifest cf-warden > cf-warden.yml
+bosh -u admin -p admin deployment cf-warden.yml
+
+cat <<END | bosh -u admin -p admin cck
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+yes
+END
+  CCK_SCRIPT
+
+  if Vagrant::VERSION =~ /^1.[0-6]/
+    config.vm.provision :shell, id: "cck", run: "always", inline: CCK
+  else
+    config.vm.provision "cck", type: :shell, run: "always", inline: CCK
+  end
+end
