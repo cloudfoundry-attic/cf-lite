@@ -8,7 +8,7 @@
   "builders": [{
     "type": "amazon-ebs",
     "ami_name": "cflite-{{user `build_number`}}",
-    "instance_type": "m1.large",
+    "instance_type": "m3.xlarge",
     "region": "{{user `region`}}",
     "source_ami":  "{{user `bosh_lite_ami`}}",
     "ami_block_device_mappings": [

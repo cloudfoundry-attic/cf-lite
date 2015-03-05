@@ -72,6 +72,10 @@ build_manifest() {
     cd $BOSH_LITE_DIR
     export CF_RELEASE_DIR=$CF_DIR
     ./bin/make_manifest_spiff
+
+    sed s/"apps_domain: 10.244.0.34.xip.io"/"apps_domain: 10.244.0.34.xip.io\n    default_timeout: 180\n    cf_push_timeout: 360\n    long_curl_timeout: 360\n    broker_start_timeout: 300"/ < /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest.yml > /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new.yml
+    mv /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest.yml /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-old.yml
+    mv /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new.yml /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest.yml
   )
 }
 
