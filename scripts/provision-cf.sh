@@ -67,6 +67,10 @@ build_manifest() {
     cd $CF_DIR
     git checkout tags/v${CF_RELEASE_VERSION}
 
+    sed s#'"artifacts_directory": "/var/vcap/sys/log/acceptance_tests/",'#'"artifacts_directory": "/var/vcap/sys/log/acceptance_tests/",\n  "default_timeout": 180,\n  "cf_push_timeout": 270,\n  "long_curl_timeout": 360,\n  "broker_start_timeout": 360,'# < $CF_DIR/jobs/acceptance-tests/templates/config.json.erb > $CF_DIR/jobs/acceptance-tests/templates/config.json.new
+    mv $CF_DIR/jobs/acceptance-tests/templates/config.json.erb $CF_DIR/jobs/acceptance-tests/templates/config.json.old
+    mv $CF_DIR/jobs/acceptance-tests/templates/config.json.new $CF_DIR/jobs/acceptance-tests/templates/config.json.erb
+
     cd $WORKSPACE_DIR
     git clone --depth=1 https://github.com/cloudfoundry/bosh-lite.git
     cd $BOSH_LITE_DIR
