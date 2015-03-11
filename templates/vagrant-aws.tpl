@@ -96,8 +96,6 @@ cat <<END | bosh -u admin -p admin cck
 2
 2
 2
-2
-2
 yes
 END
   CCK_SCRIPT
