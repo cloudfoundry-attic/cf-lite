@@ -13,7 +13,7 @@ box_add_and_vagrant_up() {
 }
 
 main() {
-  # download_box aws ${GO_PIPELINE_COUNTER}
+  download_box aws ${GO_PIPELINE_COUNTER}
   box_add_and_vagrant_up aws ${GO_PIPELINE_COUNTER}
   # remotely apt-get update
   # remotely apt-get install -y git
