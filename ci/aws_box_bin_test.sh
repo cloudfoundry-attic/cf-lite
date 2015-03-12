@@ -35,7 +35,9 @@ main() {
             export CONFIG=\"/home/ubuntu/integration_config.json\" && 
             cat /home/ubuntu/integration_config.json && 
             env &&
-            sudo chmod 777 -R /home/ubuntu/.cf &&
+            ls -al /home/ubuntu &&
+            ls -al /root &&
+            sudo chmod 777 -R /home/ubuntu/.cf || true &&
             bin/test"
 
   # somehow put it on the remote machine
