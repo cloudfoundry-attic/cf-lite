@@ -67,7 +67,8 @@ publish_vagrant_box_to_s3() {
   candidate_build_number=$2
   box_name="cf-lite-${box_type}-ubuntu-trusty-${candidate_build_number}.box"
 
-  s3cmd --access_key=$BOSH_AWS_ACCESS_KEY_ID --secret_key=$BOSH_AWS_SECRET_ACCESS_KEY mv s3://cf-lite-ci-pipeline/$box_name s3://cf-lite-boxes/$box_name
+#  s3cmd --access_key=$BOSH_AWS_ACCESS_KEY_ID --secret_key=$BOSH_AWS_SECRET_ACCESS_KEY mv s3://cf-lite-ci-pipeline/$box_name s3://cf-lite-boxes/$box_name
+  s3cmd mv s3://cf-lite-ci-pipeline/$box_name s3://cf-lite-boxes/$box_name
 }
 
 main(){
