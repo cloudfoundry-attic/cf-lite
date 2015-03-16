@@ -35,6 +35,7 @@
     "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E {{ .Path }}",
     "scripts": [
       "scripts/provision-cf.sh",
+      "scripts/setup-sample-app.sh",
       "scripts/cleanup.sh",
       "scripts/shrink-disk.sh"
     ]
