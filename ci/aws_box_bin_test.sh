@@ -39,6 +39,8 @@ main() {
             ls -al /home/ubuntu &&
             ls -al /root &&
             sudo chmod 777 -R /home/ubuntu/.cf || true &&
+            sudo chown ubuntu -R /home/ubuntu/.cf &&
+            sudo chgrp ubuntu -R /home/ubuntu/.cf &&
             bin/test"
 
   # somehow put it on the remote machine
