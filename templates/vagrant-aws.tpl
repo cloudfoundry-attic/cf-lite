@@ -6,11 +6,11 @@ unless env.include?('BOSH_AWS_ACCESS_KEY_ID') &&  env.include?('BOSH_AWS_SECRET_
 end
 
 def tags_from_environment(env)
-  values = [env.fetch('CF_LITE_NAME', 'Vagrant')]
-  values.concat env.fetch('CF_LITE_TAG_VALUES', '').chomp.split(', ')
+  values = [env.fetch('BOX_NAME', 'CF-Lite')]
+  values.concat env.fetch('BOSH_LITE_TAG_VALUES', '').chomp.split(', ')
 
   keys = ['Name']
-  keys.concat env.fetch('CF_LITE_TAG_KEYS', '').chomp.split(', ')
+  keys.concat env.fetch('BOSH_LITE_TAG_KEYS', '').chomp.split(', ')
 
   raise 'Please provide the same number of keys and values!' if keys.length != values.length
 
@@ -22,21 +22,21 @@ Vagrant.configure('2') do |config|
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
   config.ssh.username = 'ubuntu'
-  config.ssh.private_key_path = env.fetch('CF_LITE_PRIVATE_KEY', '~/.ssh/id_rsa_bosh')
+  config.ssh.private_key_path = env.fetch('BOSH_LITE_PRIVATE_KEY', '~/.ssh/id_rsa_bosh')
 
   config.vm.provider :aws do |v|
     v.access_key_id =       env.fetch('BOSH_AWS_ACCESS_KEY_ID')
     v.secret_access_key =   env.fetch('BOSH_AWS_SECRET_ACCESS_KEY')
-    v.keypair_name =        env.fetch('CF_LITE_KEYPAIR', 'cf')
+    v.keypair_name =        env.fetch('BOSH_LITE_KEYPAIR', 'cf')
     v.block_device_mapping = [{
       :DeviceName => '/dev/sda1',
-      'Ebs.VolumeSize' => env.fetch('CF_LITE_DISK_SIZE', '50').to_i
+      'Ebs.VolumeSize' => env.fetch('bosh_LITE_DISK_SIZE', '50').to_i
     }]
-    v.instance_type =       env.fetch('CF_LITE_INSTANCE_TYPE', 'm3.2xlarge')
-    v.security_groups =     [env.fetch('CF_LITE_SECURITY_GROUP', 'inception')]
-    v.subnet_id =           env.fetch('CF_LITE_SUBNET_ID') if env.include?('CF_LITE_SUBNET_ID')
+    v.instance_type =       env.fetch('BOSH_LITE_INSTANCE_TYPE', 'm3.2xlarge')
+    v.security_groups =     [env.fetch('BOSH_LITE_SECURITY_GROUP', 'inception')]
+    v.subnet_id =           env.fetch('BOSH_LITE_SUBNET_ID') if env.include?('BOSH_LITE_SUBNET_ID')
     v.tags =                tags_from_environment(env)
-    v.private_ip_address =  env.fetch('CF_LITE_PRIVATE_IP') if env.include?('CF_LITE_PRIVATE_IP')
+    v.private_ip_address =  env.fetch('BOSH_LITE_PRIVATE_IP') if env.include?('BOSH_LITE_PRIVATE_IP')
   end
 
   meta_data_public_ip_url = "http://169.254.169.254/latest/meta-data/public-ipv4"
