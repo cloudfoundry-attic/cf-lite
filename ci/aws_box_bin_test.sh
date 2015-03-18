@@ -14,6 +14,7 @@ box_add_and_vagrant_up() {
 
 main() {
   cd ci
+  unset BOSH_LITE_SUBNET_ID
   download_box aws ${GO_PIPELINE_COUNTER}
   box_add_and_vagrant_up aws ${GO_PIPELINE_COUNTER}
   # remotely apt-get update
