@@ -105,4 +105,20 @@ END
   else
     config.vm.provision "cck", type: :shell, run: "always", inline: CCK
   end
+
+  LOGIN = <<-LOGIN_SCRIPT
+    sudo chown -R ubuntu .cf
+    sudo chgrp -R ubuntu .cf
+
+    cf api --skip-ssl-validation https://api.10.244.0.34.xip.io
+    cf auth admin admin
+    cf target -o sample-org -s sample-space
+    
+  LOGIN_SCRIPT
+
+  if Vagrant::VERSION =~ /^1.[0-6]/
+    config.vm.provision :shell, id: "login", run: "always", inline: LOGIN
+  else
+    config.vm.provision "login", type: :shell, run: "always", inline: LOGIN
+  end
 end

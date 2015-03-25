@@ -2,29 +2,29 @@
 
 set -ex
 
-repeat() {
-  set +e
-  for i in 1 2 3 4 5; do
-    "$@"
-    if [ $? -eq 0 ] ; then
-      break
-    fi
-    sleep 10
-  done
-  set -e
-}
+  repeat() {
+    set +e
+    for i in 1 2 3 4 5; do
+      "$@"
+      if [ $? -eq 0 ] ; then
+        break
+      fi
+      sleep 10
+    done
+    set -e
+  }
 
 main(){
-  repeat cf api --skip-ssl-validation https://api.10.244.0.34.xip.io
-  cf auth admin admin
+  repeat sudo -u ubuntu cf api --skip-ssl-validation https://api.10.244.0.34.xip.io
+  sudo -u ubuntu cf auth admin admin
 
   set +e
-  cf create-org sample-org
-  cf target -o sample-org
-  cf create-space sample-space
+  sudo -u ubuntu cf create-org sample-org
+  sudo -u ubuntu cf target -o sample-org
+  sudo -u ubuntu cf create-space sample-space
   set -e
 
-  cf target -o sample-org -s sample-space
+  sudo -u ubuntu cf target -o sample-org -s sample-space
 
   #install_docker
 
@@ -51,10 +51,10 @@ install_docker(){
 install_sample_app(){
   sudo apt-get -y install default-jdk
 
-  git clone https://github.com/cloudfoundry-samples/spring-music.git
+  sudo -u ubuntu git clone https://github.com/cloudfoundry-samples/spring-music.git
   cd spring-music
-  ./gradlew assemble
-  cf push   
+  sudo -u ubuntu ./gradlew assemble
+  sudo -u ubuntu cf push spring-music
 }
 
 main

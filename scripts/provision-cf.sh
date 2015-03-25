@@ -18,6 +18,12 @@ main() {
   build_manifest
   deploy_release
   delete_compiled_package_cache
+  change_cf_permissions
+}
+
+change_cf_permissions() {
+  chown -R ubuntu /home/ubuntu/
+  chgrp -R ubuntu /home/ubuntu/
 }
 
 make_compiled_package_cache() {

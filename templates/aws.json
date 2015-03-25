@@ -36,7 +36,6 @@
     "scripts": [
       "scripts/provision-cf.sh",
       "scripts/setup-sample-app.sh",
-      "scripts/cleanup.sh",
       "scripts/shrink-disk.sh"
     ]
   }],
