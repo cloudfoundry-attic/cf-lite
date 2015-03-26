@@ -27,7 +27,7 @@ Vagrant.configure('2') do |config|
   config.vm.provider :aws do |v|
     v.access_key_id =       env.fetch('BOSH_AWS_ACCESS_KEY_ID')
     v.secret_access_key =   env.fetch('BOSH_AWS_SECRET_ACCESS_KEY')
-    v.keypair_name =        env.fetch('BOSH_LITE_KEYPAIR', 'cf')
+    v.keypair_name =        env.fetch('BOSH_LITE_KEYPAIR', 'bosh')
     v.block_device_mapping = [{
       :DeviceName => '/dev/sda1',
       'Ebs.VolumeSize' => env.fetch('bosh_LITE_DISK_SIZE', '50').to_i
@@ -83,6 +83,7 @@ bosh -u admin -p admin target localhost
 bosh -u admin -p admin download manifest cf-warden > cf-warden.yml
 bosh -u admin -p admin deployment cf-warden.yml
 
+
 cat <<END | bosh -u admin -p admin cck
 2
 2
@@ -111,9 +112,7 @@ END
     sudo chgrp -R ubuntu .cf
 
     cf api --skip-ssl-validation https://api.10.244.0.34.xip.io
-    cf auth admin admin
-    cf target -o sample-org -s sample-space
-    
+
   LOGIN_SCRIPT
 
   if Vagrant::VERSION =~ /^1.[0-6]/
