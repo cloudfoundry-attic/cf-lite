@@ -32,7 +32,7 @@ Vagrant.configure('2') do |config|
       :DeviceName => '/dev/sda1',
       'Ebs.VolumeSize' => env.fetch('bosh_LITE_DISK_SIZE', '50').to_i
     }]
-    v.instance_type =       env.fetch('BOSH_LITE_INSTANCE_TYPE', 'm3.2xlarge')
+    v.instance_type =       env.fetch('BOSH_LITE_INSTANCE_TYPE', 'm1.large')
     v.security_groups =     [env.fetch('BOSH_LITE_SECURITY_GROUP', 'inception')]
     v.subnet_id =           env.fetch('BOSH_LITE_SUBNET_ID') if env.include?('BOSH_LITE_SUBNET_ID')
     v.tags =                tags_from_environment(env)
