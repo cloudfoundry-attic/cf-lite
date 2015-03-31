@@ -41,6 +41,7 @@ main(){
   # cf restart spring-music
   set -e
 
+  sudo -u ubuntu cf scale spring-music -i 2
 }
 
 
