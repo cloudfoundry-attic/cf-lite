@@ -1,7 +1,7 @@
 # better error messages from Hash.fetch
 env = ENV.to_hash
 
-unless env.include?('BOSH_AWS_ACCESS_KEY_ID') &&  env.include?('BOSH_AWS_SECRET_ACCESS_KEY')
+unless env.include?('BOSH_AWS_ACCESS_KEY_ID') && env.include?('BOSH_AWS_SECRET_ACCESS_KEY')
   raise 'BOSH_AWS_ACCESS_KEY_ID and BOSH_AWS_SECRET_ACCESS_KEY must be provided in the environment'
 end
 
@@ -42,49 +42,48 @@ Vagrant.configure('2') do |config|
   meta_data_public_ip_url = "http://169.254.169.254/latest/meta-data/public-ipv4"
   meta_data_local_ip_url = "http://169.254.169.254/latest/meta-data/local-ipv4"
 
-  PUBLIC_IP = <<-PUBLIC_IP_SCRIPT
+  public_ip_code = <<-public_ip_script
 public_ip_http_code=`curl -s -o /dev/null -w "%{http_code}" #{meta_data_public_ip_url}`
 
 if [ $public_ip_http_code == "404" ]; then
-  local_ip=`curl -s #{meta_data_local_ip_url}`
+  local_ip_address=`curl -s #{meta_data_local_ip_url}`
   echo "There is no public IP for this instance"
-  echo "The private IP for this instance is $local_ip"
-  echo "You can 'bosh target $local_ip', or run 'vagrant ssh' and then 'bosh target 127.0.0.1'"
+  echo "The private IP for this instance is $local_ip_address"
+  echo "You can 'bosh target $local_ip_address', or run 'vagrant ssh' and then 'bosh target 127.0.0.1'"
 else
-  public_ip=`curl -s #{meta_data_public_ip_url}`
-  echo "The public IP for this instance is $public_ip"
-  echo "You can 'bosh target $public_ip', or run 'vagrant ssh' and then 'bosh target 127.0.0.1'"
+  public_ip_address=`curl -s #{meta_data_public_ip_url}`
+  echo "The public IP for this instance is $public_ip_address"
+  echo "You can 'bosh target $public_ip_address', or run 'vagrant ssh' and then 'bosh target 127.0.0.1'"
 fi
-  PUBLIC_IP_SCRIPT
+  public_ip_script
 
   if Vagrant::VERSION =~ /^1.[0-6]/
-    config.vm.provision :shell, id: "public_ip", run: "always", inline: PUBLIC_IP
+    config.vm.provision :shell, id: "public_ip", run: "always", inline: public_ip_code
   else
-    config.vm.provision "public_ip", type: :shell, run: "always", inline: PUBLIC_IP
+    config.vm.provision "public_ip", type: :shell, run: "always", inline: public_ip_code
   end
 
-  PORT_FORWARDING = <<-IP_SCRIPT
+  port_forwarding_code = <<-port_forwarding_script
 local_ip=`curl -s #{meta_data_local_ip_url}`
 echo "Setting up port forwarding for the CF Cloud Controller..."
 sudo iptables -t nat -A PREROUTING -p tcp -d $local_ip --dport 80 -j DNAT --to 10.244.0.34:80
 sudo iptables -t nat -A PREROUTING -p tcp -d $local_ip --dport 443 -j DNAT --to 10.244.0.34:443
 sudo iptables -t nat -A PREROUTING -p tcp -d $local_ip --dport 4443 -j DNAT --to 10.244.0.34:4443
-  IP_SCRIPT
+  port_forwarding_script
 
   if Vagrant::VERSION =~ /^1.[0-6]/
-    config.vm.provision :shell, id: "port_forwarding", run: "always", inline: PORT_FORWARDING
+    config.vm.provision :shell, id: "port_forwarding", run: "always", inline: port_forwarding_code
   else
-    config.vm.provision "port_forwarding", type: :shell, run: "always", inline: PORT_FORWARDING
+    config.vm.provision "port_forwarding", type: :shell, run: "always", inline: port_forwarding_code
   end
 
-
-  CCK = <<-CCK_SCRIPT
+  cck_code = <<-cck_script
 bosh -u admin -p admin target localhost
 bosh -u admin -p admin download manifest cf-warden > cf-warden.yml
 bosh -u admin -p admin deployment cf-warden.yml
 
 
-cat <<END | bosh -u admin -p admin cck
+cat <<end | bosh -u admin -p admin cck
 2
 2
 2
@@ -98,26 +97,23 @@ cat <<END | bosh -u admin -p admin cck
 2
 2
 yes
-END
-  CCK_SCRIPT
+end
+  cck_script
 
   if Vagrant::VERSION =~ /^1.[0-6]/
-    config.vm.provision :shell, id: "cck", run: "always", inline: CCK
+    config.vm.provision :shell, id: "cck", run: "always", inline: cck_code
   else
-    config.vm.provision "cck", type: :shell, run: "always", inline: CCK
+    config.vm.provision "cck", type: :shell, run: "always", inline: cck_code
   end
 
-  LOGIN = <<-LOGIN_SCRIPT
+  login_code = <<-login_script
     sudo chown -R ubuntu .cf
     sudo chgrp -R ubuntu .cf
-
-    cf api --skip-ssl-validation https://api.10.244.0.34.xip.io
-
-  LOGIN_SCRIPT
+  login_script
 
   if Vagrant::VERSION =~ /^1.[0-6]/
-    config.vm.provision :shell, id: "login", run: "always", inline: LOGIN
+    config.vm.provision :shell, id: "login", run: "always", inline: login_code
   else
-    config.vm.provision "login", type: :shell, run: "always", inline: LOGIN
+    config.vm.provision "login", type: :shell, run: "always", inline: login_code
   end
 end
