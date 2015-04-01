@@ -1,8 +1,10 @@
 # CF Lite
 
+*** This project is still work in progress ***
+
 A local development environment for Cloud Foundry.
 
-CF Lite is a quick and easy way to get Cloud Foundry running on a single VM. CF Lite was created for users to have their own sandbox version of CF to deploy applications. 
+CF Lite is a quick and easy way to get Cloud Foundry running on a single VM *on AWS*. CF Lite was created for users to have their own sandbox version of CF to deploy applications. 
 
 Note: It does not require any installation or knowledge of BOSH.
 
