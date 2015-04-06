@@ -42,7 +42,7 @@ Note: It does not require any installation or knowledge of BOSH.
     export BOSH_LITE_SECURITY_GROUP= # Security group (see below on how to create one)
 
     export BOSH_LITE_PRIVATE_KEY= # Path to the private SSH key file matching imported AWS Key Pair
-    export CF_LITE_KEYPAIR=       # AWS Key Pair name
+    export BOSH_LITE_KEYPAIR=       # AWS Key Pair name
     ```
 
     * You will need a key pair to SSH into your running cf-lite box. If you don't have one already in your AWS account, you will need to create one. The following instructions are applicable to a Mac/UNIX environment:
@@ -50,7 +50,7 @@ Note: It does not require any installation or knowledge of BOSH.
       1. "ssh-keygen -t rsa"
       1. Save it to ~/.ssh folder (create it if it does not exist)
       1. Import the *.pub file into EC2 Key Pairs
-      1. Give it a name and store the name via `CF_LITE_KEYPAIR` environment variable
+      1. Give it a name and store the name via `BOSH_LITE_KEYPAIR` environment variable
       1. Specify path to the private key file via `BOSH_LITE_PRIVATE_KEY` environment variable
 
     * When deploying to a VPC, the security group must be specified as an ID of the form `sg-abcd1234`, as opposed to a name like `default`.
@@ -85,3 +85,11 @@ Note: It does not require any installation or knowledge of BOSH.
 
     $ cf push ...
     ```
+
+1. The spring-music demo app should already be running in the 'sample-org' organization and 'sample-space' space.
+```
+    $ cf auth admin admin
+
+    $ cf target -o sample-org -s sample-space
+    $ cf apps
+```
