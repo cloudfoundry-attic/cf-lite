@@ -19,11 +19,18 @@ main() {
   deploy_release
   delete_compiled_package_cache
   change_cf_permissions
+  remove_ssh_authorized_keys
 }
 
 change_cf_permissions() {
   chown -R ubuntu /home/ubuntu/
   chgrp -R ubuntu /home/ubuntu/
+}
+
+remove_ssh_authorized_keys()
+{
+  rm /root/.ssh/authorized_keys
+  rm /home/ubuntu/.ssh/authorized_keys
 }
 
 make_compiled_package_cache() {

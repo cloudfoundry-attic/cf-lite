@@ -109,6 +109,27 @@ end
   login_code = <<-login_script
     sudo chown -R ubuntu .cf
     sudo chgrp -R ubuntu .cf
+
+    repeat() {
+      set +e
+      for i in 1 2 3 4 5; do
+        "$@"
+        if [ $? -eq 0 ] ; then
+          break
+        fi
+        sleep 10
+      done
+      set -e
+    }
+
+    repeat cf api api.10.244.0.34.xip.io --skip-ssl-validation || true
+    repeat cf auth admin admin
+    repeat cf target -o sample-org -s sample-space
+
+    public_ip_address=`curl -s http://169.254.169.254/latest/meta-data/public-ipv4`
+
+    repeat cf create-domain sample-org spring-music.$public_ip_address.xip.io
+    repeat cf map-route spring-music spring-music.$public_ip_address.xip.io
   login_script
 
   if Vagrant::VERSION =~ /^1.[0-6]/
