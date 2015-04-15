@@ -4,6 +4,9 @@ source $(dirname $0)/ci-helpers.sh
 
 set -ex
 
+#this installs anything that the goCD agents need to run our scripts
+../scripts/install_prerequisites.sh
+
 ./bin/build-aws ${BOSH_LITE_AMI} ${CF_RELEASE_VERSION} ${GO_PIPELINE_COUNTER} | tee output
 
 ami=`tail -2 output | grep -o "ami-.*"`
