@@ -107,14 +107,32 @@ bosh -u admin -p admin cck --auto
       set -e
     }
 
-    repeat cf api api.10.244.0.34.xip.io --skip-ssl-validation || true
-    repeat cf auth admin admin
-    repeat cf target -o sample-org -s sample-space
+
+    # repeat cf api api.10.244.0.34.xip.io --skip-ssl-validation || true
+    # repeat cf auth admin admin
+    # repeat cf target -o sample-org -s sample-space
+
+    # get public IP address of running box and redeploy with system domain as that IP
+    # this requires changing the manifest
 
     public_ip_address=`curl -s http://169.254.169.254/latest/meta-data/public-ipv4`
 
-    repeat cf create-domain sample-org spring-music.$public_ip_address.xip.io
-    repeat cf map-route spring-music spring-music.$public_ip_address.xip.io
+    #repeat cf create-domain sample-org $public_ip_address.xip.io
+    #repeat cf map-route spring-music $public_ip_address.xip.io -n spring-music
+
+    sed s/"10.244.0.34.xip.io"/"$public_ip_address.xip.io"/ < cf-warden.yml > cf-warden-public.yml
+
+    repeat bosh -u admin -p admin deployment cf-warden-public.yml
+    repeat bosh -u admin -p admin -n deploy
+
+    repeat cf api api.$public_ip_address.xip.io --skip-ssl-validation || true
+    repeat cf auth admin admin
+    repeat cf target -o sample-org -s sample-space
+
+    # map route for spring-music app with the new system domain
+
+    repeat cf map-route spring-music $public_ip_address.xip.io -n spring-music
+
   login_script
 
   if Vagrant::VERSION =~ /^1.[0-6]/
@@ -123,3 +141,4 @@ bosh -u admin -p admin cck --auto
     config.vm.provision "login", type: :shell, run: "always", inline: login_code
   end
 end
+

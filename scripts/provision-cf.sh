@@ -91,9 +91,16 @@ build_manifest() {
     export CF_RELEASE_DIR=$CF_DIR
     ./bin/make_manifest_spiff
 
-    sed s/"apps_domain: 10.244.0.34.xip.io"/"apps_domain: 10.244.0.34.xip.io\n    default_timeout: 180\n    cf_push_timeout: 360\n    long_curl_timeout: 360\n    broker_start_timeout: 300"/ < /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest.yml > /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new.yml
+    #change manifest so blobstore keys don't depend on domain
+    sed s/"resource_directory_key: 10.244.0.34.xip.io-cc-resources"/"resource_directory_key: domain-cc-resources"/< /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest.yml > /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new.yml
+    sed s/"app_package_directory_key: 10.244.0.34.xip.io-cc-packages"/"app_package_directory_key: domain-cc-packages"/< /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new.yml > /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new1.yml
+    sed s/"droplet_directory_key: 10.244.0.34.xip.io-cc-droplets"/"droplet_directory_key: domain-cc-droplets"/< /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new1.yml > /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new2.yml
+    sed s/"buildpack_directory_key: 10.244.0.34.xip.io-cc-buildpacks"/"buildpack_directory_key: domain-cc-buildpacks"/< /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new2.yml > /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new3.yml
+
+    #change manifest for greater CATS timeouts
+    sed s/"apps_domain: 10.244.0.34.xip.io"/"apps_domain: 10.244.0.34.xip.io\n    default_timeout: 180\n    cf_push_timeout: 360\n    long_curl_timeout: 360\n    broker_start_timeout: 300"/ < /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new3.yml > /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new4.yml
     mv /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest.yml /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-old.yml
-    mv /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new.yml /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest.yml
+    mv /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest-new4.yml /home/ubuntu/tmp/bosh-lite/manifests/cf-manifest.yml
   )
 }
 
