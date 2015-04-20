@@ -30,7 +30,7 @@ Vagrant.configure('2') do |config|
     v.keypair_name =        env.fetch('BOSH_LITE_KEYPAIR', 'bosh')
     v.block_device_mapping = [{
       :DeviceName => '/dev/sda1',
-      'Ebs.VolumeSize' => env.fetch('bosh_LITE_DISK_SIZE', '50').to_i
+      'Ebs.VolumeSize' => env.fetch('BOSH_LITE_DISK_SIZE', '80').to_i
     }]
     v.instance_type =       env.fetch('BOSH_LITE_INSTANCE_TYPE', 'm1.large')
     v.security_groups =     [env.fetch('BOSH_LITE_SECURITY_GROUP', 'inception')]
@@ -107,18 +107,10 @@ bosh -u admin -p admin cck --auto
       set -e
     }
 
-
-    # repeat cf api api.10.244.0.34.xip.io --skip-ssl-validation || true
-    # repeat cf auth admin admin
-    # repeat cf target -o sample-org -s sample-space
-
     # get public IP address of running box and redeploy with system domain as that IP
     # this requires changing the manifest
 
     public_ip_address=`curl -s http://169.254.169.254/latest/meta-data/public-ipv4`
-
-    #repeat cf create-domain sample-org $public_ip_address.xip.io
-    #repeat cf map-route spring-music $public_ip_address.xip.io -n spring-music
 
     sed s/"10.244.0.34.xip.io"/"$public_ip_address.xip.io"/ < cf-warden.yml > cf-warden-public.yml
 
@@ -130,7 +122,6 @@ bosh -u admin -p admin cck --auto
     repeat cf target -o sample-org -s sample-space
 
     # map route for spring-music app with the new system domain
-
     repeat cf map-route spring-music $public_ip_address.xip.io -n spring-music
 
   login_script
