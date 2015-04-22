@@ -63,12 +63,14 @@ remotely() {
 }
 
 make_config() {
+  public_ip_address=`curl -s http://169.254.169.254/latest/meta-data/public-ipv4`
+
   remotely "cat > /home/ubuntu/integration_config.json <<EOF
   {
-    \"api\": \"api.10.244.0.34.xip.io\",
+    \"api\": \"api.${public_ip_address}.xip.io\",
     \"admin_user\": \"admin\",
     \"admin_password\": \"admin\",
-    \"apps_domain\": \"10.244.0.34.xip.io\",
+    \"apps_domain\": \"${public_ip_address}.xip.io\",
     \"skip_ssl_validation\": true,
     \"default_timeout\": 600,
     \"cf_push_timeout\": 900,
