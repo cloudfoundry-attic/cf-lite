@@ -63,7 +63,7 @@ remotely() {
 }
 
 make_config() {
-  public_ip_address=`curl -s http://169.254.169.254/latest/meta-data/public-ipv4`
+  public_ip_address=`remotely "curl -s http://169.254.169.254/latest/meta-data/public-ipv4"`
 
   remotely "cat > /home/ubuntu/integration_config.json <<EOF
   {
