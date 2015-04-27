@@ -1,40 +1,17 @@
 #!/bin/bash
 
-BOSH_LITE_AMI=$1
-CF_RELEASE_VERSION=$2
-CF_LITE_CANDIDATE_BUILD_NUMBER=$3
-REGION=$4
-
-function valid_arguments() {
-  [ -n "$BOSH_LITE_AMI" -a -n "$CF_RELEASE_VERSION" -a -n "$AWS_ACCESS_KEY_ID" -a -n "$AWS_SECRET_ACCESS_KEY" ]
-}
-
-function packer_build() {
-  template_path=$(dirname $0)/../templates/aws.json
-  args="-var 'bosh_lite_ami=$BOSH_LITE_AMI' -var 'cf_release_version=$CF_RELEASE_VERSION'"
-  args="$args -color=false" # to get rid of colour codes in goCD output
-
-  if [ -n "$CF_LITE_CANDIDATE_BUILD_NUMBER" ]; then
-    args="$args -var 'build_number=$CF_LITE_CANDIDATE_BUILD_NUMBER'"
-  fi
-  if [ -n "$REGION" ]; then
-    args="$args -var 'region=$REGION'"
-  fi
-  
-  rm -rf $(dirname $0)/../output-amazon-ebs
-
-  sh -c "packer build $args $template_path"
-}
+bosh_lite_ami=$1
+cf_release_version=$2
+box_version=$3
 
 function main() {
-  if valid_arguments; then
-    packer_build
-  else
-    echo "usage: $0 <bosh_lite_ami> <cf_release_version> [<cf_lite_candidate_build_number>] [<region>]"
-    echo "       Additionally, the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables must be set"
-    echo "example: $0 ami-80c8b0e8 195 200 us-east-1"
-    exit 1
-  fi
+  rm -rf $(dirname $0)/../output-amazon-ebs
+
+  args="-var 'bosh_lite_ami=$bosh_lite_ami' -var 'cf_release_version=$cf_release_version' -var 'build_number=$box_version'"
+
+  template_path=$(dirname $0)/../templates/aws.json
+
+  sh -c "packer build $args $template_path"
 }
 
 main

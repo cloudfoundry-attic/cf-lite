@@ -4,12 +4,14 @@ source $(dirname $0)/ci-helpers.sh
 
 set -e -x
 
-scripts/install_prerequisites.sh
+box_version=$(cat box-version/number)
 
-./bin/build-aws ${BOSH_LITE_AMI} ${CF_RELEASE_VERSION} ${GO_PIPELINE_COUNTER} | tee output
+./bin/build-aws ${BOSH_LITE_AMI} ${CF_RELEASE_VERSION} $box_version | tee output
 
 ami=`tail -2 output | grep -o "ami-.*"`
 
 sleep 60
+
 aws ec2 modify-image-attribute --image-id $ami --launch-permission "{\"Add\": [{\"Group\":\"all\"}]}"
-upload_box aws ${GO_PIPELINE_COUNTER}
+
+upload_box aws $box_version
