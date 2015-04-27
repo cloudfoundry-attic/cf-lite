@@ -1,0 +1,17 @@
+---
+platform: linux
+
+image: docker:///cloudfoundry/cf-lite-ci
+
+inputs:
+- name: cf-lite
+- name: box
+
+params:
+  BOSH_AWS_ACCESS_KEY_ID:
+  BOSH_AWS_SECRET_ACCESS_KEY:
+  BOSH_LITE_PRIVATE_KEY:
+  BOSH_LITE_KEYPAIR: cf-lite
+
+run:
+  path: cf-lite/ci/cats-aws.sh

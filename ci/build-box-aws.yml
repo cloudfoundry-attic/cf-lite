@@ -1,0 +1,18 @@
+---
+platform: linux
+
+image: docker:///cloudfoundry/bosh-lite-ci
+
+inputs:
+- name: box-version
+- name: cf-lite
+
+params:
+  BOSH_AWS_ACCESS_KEY_ID:
+  BOSH_AWS_SECRET_ACCESS_KEY:
+  AWS_ACCESS_KEY_ID:
+  AWS_SECRET_ACCESS_KEY:
+  AWS_DEFAULT_REGION: us-east-1
+
+run:
+  path: cf-lite/ci/build-box-aws.sh
