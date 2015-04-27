@@ -5,6 +5,7 @@
     "build_number": "0",
     "cf_release_version": "1"
   },
+
   "builders": [{
     "type": "amazon-ebs",
     "ami_name": "cflite-{{user `build_number`}}",
@@ -14,18 +15,19 @@
     "ami_block_device_mappings": [
       {
       "device_name": "/dev/sda1",
-      "volume_size": "32"
+      "volume_size": "50"
       }
     ],
     "launch_block_device_mappings": [
       {
       "device_name": "/dev/sda1",
-      "volume_size": "32"
+      "volume_size": "50"
       }
     ],
     "ssh_username": "ubuntu",
     "ami_description": "CF-Lite AMI (build {{user `build_number`}})"
   }],
+
   "provisioners": [{
     "type": "shell",
     "inline": "while [ ! -f /var/lib/cloud/instance/boot-finished ] ; do sleep 1; done"
