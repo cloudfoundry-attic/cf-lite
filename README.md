@@ -57,6 +57,7 @@ Note: It does not require any installation or knowledge of BOSH.
 
     * When deploying to a VPC, the subnet ID must be specified via `BOSH_LITE_SUBNET_ID` environment variable.
 
+    * To change the instance type, set the `BOSH_LITE_INSTANCE_TYPE` environment variable.
 1. Run vagrant up with provider `aws`:
 
     ```
