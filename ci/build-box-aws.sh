@@ -18,5 +18,3 @@ ami=`tail -2 output | grep -o "ami-.*"`
 sleep 60
 
 aws ec2 modify-image-attribute --image-id $ami --launch-permission "{\"Add\": [{\"Group\":\"all\"}]}"
-
-upload_box aws $box_version

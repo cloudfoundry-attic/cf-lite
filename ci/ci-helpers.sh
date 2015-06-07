@@ -9,15 +9,6 @@ download_box() {
   s3cmd get "s3://cf-lite-ci-pipeline/${box_name}"
 }
 
-upload_box() {
-  box_type=$1
-  candidate_build_number=$2
-
-  box_name=cf-lite-${box_type}-ubuntu-trusty-${candidate_build_number}.box
-  bucket_url=s3://cf-lite-ci-pipeline/
-  s3cmd put $box_name $bucket_url
-}
-
 set_virtualbox_machine_folder() {
   VBoxManage setproperty machinefolder /var/vcap/data/vbox_machines
 }
